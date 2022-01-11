@@ -4,21 +4,47 @@ draws the current date as a simple complication for an analog clock on a Bangle.
 
 This module displays the current date as a complication for an analog clock on a [Bangle.js 2](https://www.espruino.com/Bangle.js2).
 
+<table>
+ <tr valign="top">
+   <td align="center"><img src="smallDateComplication.png"><br>small date complication</td>
+   <td align="center"><img src="largeDateComplication.png"><br>large date complication</td>
+ </tr>
+</table>
+
 ## Usage ##
 
 Within a clock implementation, the module may be used as follows:
 
 ```
-let Complication = require('https://raw.githubusercontent.com/rozek/banglejs-2-date-complication/main/Complication.js');
+let Clockwork = require(...);
+Clockwork.windUp({
+  complications: {
+    b:require('https://raw.githubusercontent.com/rozek/banglejs-2-date-complication/main/Complication.js'),
+  }
+  ...
+});
 ```
 
-Whenever needed, the module's exported `draw` method will then be invoked as follows:
+It supports both small and large complication areas and adjusts its output automatically: in large areas, both the current month and the current day of the month are shown, in small areas just the day.
+
+## Example ##
+
+The following code shows a complete example for a (still simple) analog clock using this complication:
 
 ```
-Complication.draw(x,y, Radius, Settings);
-```
+let Clockwork = require('https://raw.githubusercontent.com/rozek/banglejs-2-simple-clockwork/main/Clockwork.js');
 
-`x` and `y` define the center of the area into which the complication should be drawn and `radius` its foreseen radius. If `x` contains the horizontal center of the screen, the complication will be either at the topmost or the bottommost possible position for complications - in both cases, it is allowed to cover more space than just a circular disc with the given radius. Instead, it may cover a horizontal span from `x-3*Radius` to `x+3*Radius` (and the same vertical span as small complications: `y-Radius`...`y+Radius`)
+Clockwork.windUp({
+  face: require('https://raw.githubusercontent.com/rozek/banglejs-2-four-fold-clock-face/main/ClockFace.js'),
+  hands:require('https://raw.githubusercontent.com/rozek/banglejs-2-hollow-clock-hands/main/ClockHands.js'),
+  complications: {
+    b:require('https://raw.githubusercontent.com/rozek/banglejs-2-date-complication/main/Complication.js'),
+  }
+},{
+  Foreground:'#000000', Background:'#FFFFFF', Seconds:'#FF0000',
+  withDots:true
+});
+```
 
 ## License ##
 
